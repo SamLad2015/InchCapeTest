@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using InchCapeTest.DtoS;
 using InchCapeTest.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace InchCapeTest.Controllers.v1
             _vehicleService = vehicleService;
         }
         [HttpGet(Name = nameof(GetVehicles))]
-        public async Task<IActionResult> GetVehicles()
+        public async Task<ActionResult<IList<VehicleModel>>> GetVehicles()
         {
             return Ok(await _vehicleService.GetAll());
         }
