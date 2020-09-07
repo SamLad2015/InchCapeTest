@@ -2,9 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using InchCapeTest.DtoS;
-using InchCapeTest.Entities;
 using InchCapeTest.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace InchCapeTestUnitTests.Mocks
@@ -13,25 +11,15 @@ namespace InchCapeTestUnitTests.Mocks
     {
         public IVehicleService VehicleService;
         private readonly IList<VehicleModel> _vehicles = new List<VehicleModel>();
-        private readonly IList<MakeEntity> _makes = new List<MakeEntity>
-        {
-            new MakeEntity() { Id = 1, Make = "MyAudi" },
-            new MakeEntity() { Id = 2, Make = "MyBmw" }
-        };
-        private readonly IList<VehicleTypeEntity> _vehicleTypes = new List<VehicleTypeEntity>
-        {
-            new VehicleTypeEntity() { Id = 1, VehicleType = "MyCar" },
-            new VehicleTypeEntity() { Id = 2, VehicleType = "MyBike" },
-            new VehicleTypeEntity() { Id = 3, VehicleType = "MyVan" }
-        };
-        private readonly IList<QuoteTypeEntity> _quoteTypes = new List<QuoteTypeEntity>
-        {
-            new QuoteTypeEntity() { Id = 1, QuoteType = "MyHp" },
-            new QuoteTypeEntity() { Id = 2, QuoteType = "MyPcp" }
-        };
+     
         public void SetupMocks() 
         {
+            var vehiclePropertyMocks = new VehiclePropertyMocks();
             var vehicleServiceMoq = new Mock<IVehicleService>();
+
+            var makes = vehiclePropertyMocks.GetFakeMakes();
+            var vehicleTypes = vehiclePropertyMocks.GetFakeVehicleTypes();
+            var quoteTypes = vehiclePropertyMocks.GetFakeQuoteTypes();
 
             vehicleServiceMoq
                 .Setup(o => o.GetAll())
@@ -44,9 +32,9 @@ namespace InchCapeTestUnitTests.Mocks
                     _vehicles.Add(new VehicleModel
                     {
                         Id = _vehicles.Last().Id + 1,
-                        Make = _makes.First(m => m.Id == model.MakeId).Make,
-                        VehicleType = _vehicleTypes.First(m => m.Id == model.VehicleTypeId).VehicleType,
-                        QuoteType = _quoteTypes.First(m => m.Id == model.QuoteTypeId).QuoteType,
+                        Make = makes.First(m => m.Id == model.MakeId).Make,
+                        VehicleType = vehicleTypes.First(m => m.Id == model.VehicleTypeId).VehicleType,
+                        QuoteType = quoteTypes.First(m => m.Id == model.QuoteTypeId).QuoteType,
                         AprRanges = new AprRangeModel
                         {
                             Upto3MonthsApr = model.Upto3MonthsApr,

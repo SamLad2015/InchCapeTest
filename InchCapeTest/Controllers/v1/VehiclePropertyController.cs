@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using InchCapeTest.DtoS;
 using InchCapeTest.Enums;
 using InchCapeTest.Interfaces;
@@ -19,21 +20,21 @@ namespace InchCapeTest.Controllers.v1
         }
         [HttpGet]
         [Route("makes", Name = nameof(GetMakes))]
-        public async Task<IActionResult> GetMakes()
+        public async Task<ActionResult<IList<VehiclePropertyModel>>> GetMakes()
         {
             return Ok(await _vehiclePropertyService.GetAll(VehiclePropertyEnum.Make));
         }
         
         [HttpGet]
         [Route("quoteTypes", Name = nameof(GetQuoteTypes))]
-        public async Task<IActionResult> GetQuoteTypes()
+        public async Task<ActionResult<IList<VehiclePropertyModel>>> GetQuoteTypes()
         {
             return Ok(await _vehiclePropertyService.GetAll(VehiclePropertyEnum.QuoteType));
         }
         
         [HttpGet]
         [Route("vehicleTypes", Name = nameof(GetVehicleTypes))]
-        public async Task<IActionResult> GetVehicleTypes()
+        public async Task<ActionResult<IList<VehiclePropertyModel>>> GetVehicleTypes()
         {
             return Ok(await _vehiclePropertyService.GetAll(VehiclePropertyEnum.VehicleType));
         }
